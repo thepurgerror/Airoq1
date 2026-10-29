@@ -1,143 +1,249 @@
-# AIROQ — AI Chat, Your Way
+<div align="center">
 
-**A multi-model AI chatbot built for flexible conversations, research, and productivity.**
+# AIROQ
 
-[**Live Demo →**](https://airoq1.web.app)
+### One interface. Multiple AI models. More ways to think.
 
-AIROQ is a web-based AI assistant that brings multiple AI models and useful tools together in one interface. It combines conversational AI, web search, PDF analysis, chat history, and personalization features to create a flexible AI experience.
+*A multi-model AI assistant for conversations, research, document analysis, and personalised AI workflows.*
 
-Instead of relying on a single model or a fixed interaction style, AIROQ lets users explore different models and customize how they interact with AI.
+<br>
 
-## ✨ Features
+[![Live Application](https://img.shields.io/badge/Live%20Application-Launch%20AIROQ-6366F1?style=for-the-badge&logo=firebase&logoColor=white)](https://airoq1.web.app/)
 
-### 🤖 Multiple AI Models
-- Access multiple AI models through a unified chat interface.
-- Switch between available models to explore different responses.
-- Choose a model according to your task and preferences.
+**[Launch AIROQ →](https://airoq1.web.app/)**
 
-### 💬 AI Chat
-- Interact with AI through a conversational interface.
-- Maintain chat sessions and revisit previous conversations.
-- Customize the assistant's behavior using system prompts.
+</div>
 
-### 🔎 Web Search
-- Use web search capabilities for research and information gathering.
-- Combine AI conversations with web-based information when supported by the selected functionality.
+---
+
+## Overview
+
+**AIROQ** is a web-based AI assistant that brings multiple AI models and useful productivity tools together in a single interface.
+
+Instead of limiting users to one model or a fixed interaction style, AIROQ provides a unified environment for exploring different AI models, having conversations, researching topics, analysing PDF documents, and customising AI behaviour.
+
+The application combines a browser-based chat interface with account authentication, persistent conversation history, model selection, and configurable AI integrations.
+
+AIROQ is deployed on Firebase Hosting and is accessible through its live website.
+
+## Features
+
+### 🤖 Multi-Model AI
+
+Interact with multiple supported AI models through one application.
+
+- Choose from available AI models.
+- Switch between models for different tasks.
+- Explore different responses and approaches.
+- Use the model options supported by the current configuration.
+
+### 💬 Conversational AI
+
+A centralised chat interface for everyday AI interactions.
+
+- Ask questions and explore ideas.
+- Maintain conversational context.
+- Use available streaming responses.
+- Personalise the assistant's behaviour through custom system prompts.
+- Access supported conversation-management controls.
+
+### 🔎 Web Search and Research
+
+Combine AI conversations with web-oriented research capabilities.
+
+- Research topics using available search functionality.
+- Gather information for further exploration.
+- Use AI to help interpret research results.
+- Support research workflows within the chat experience.
+
+Search results and their availability depend on the configured implementation and external services.
 
 ### 📄 PDF Analysis
-- Work with PDF documents and extract useful information.
-- Use AI to help understand, analyze, and summarize document content.
+
+Work with document content through AI-assisted workflows.
+
+- Provide supported PDF documents for analysis.
+- Ask questions about document content.
+- Summarise information.
+- Extract useful explanations and insights.
+
+Document size, supported formats, and processing capabilities depend on the current implementation.
 
 ### 🗂️ Chat History
-- Save and revisit conversations.
-- Use Firebase Firestore for chat-history storage.
-- Sign in with Google to access the application's account-based functionality.
 
-### ⚙️ Personalization
-- Configure the AI experience to suit individual preferences.
-- Use custom system prompts to guide responses.
-- Configure the supported AI model and API settings.
+Keep conversations organised and accessible.
 
-## 🛠️ Technology Stack
+- Save supported conversation history.
+- Revisit previous chats.
+- Maintain account-associated chat records.
+- Use Firebase Firestore for persistent chat-history storage.
 
-| Technology | Purpose |
+Access to stored conversations depends on the application's authentication and security configuration.
+
+### ⚙️ Customisation
+
+Adapt the AI experience to your preferences.
+
+- Configure supported AI models.
+- Use custom system prompts.
+- Adjust available chat settings.
+- Manage supported API-key settings.
+- Personalise the way you interact with the assistant.
+
+### 🔐 Google Authentication
+
+AIROQ integrates Firebase Authentication for Google sign-in.
+
+This provides an authentication mechanism for features that require an account, while account-related access depends on the application's configuration.
+
+### ⚡ Browser-Based Experience
+
+AIROQ is available through its hosted web application.
+
+- No separate desktop installation is required.
+- Access the application through a supported browser.
+- Use the available chat and productivity features from the live website.
+
+---
+
+## Technology Stack
+
+| Technology / Service | Purpose |
 |---|---|
 | HTML5 | Application structure |
 | CSS3 | Styling and interface design |
 | JavaScript | Application logic and interactions |
+| Firebase Hosting | Web application deployment |
 | Firebase Authentication | Google sign-in |
-| Cloud Firestore | Chat history and application data |
-| Firebase Hosting | Deployment and hosting |
+| Cloud Firestore | Persistent chat history and application data |
 | Groq API | Access to supported AI models |
-| Browser Local Storage | Local persistence for supported settings, including API-key configuration |
+| Browser Local Storage | Persistence of supported client-side settings |
 
-## 🚀 Live Demo
+The technologies above reflect the project's described implementation. Additional libraries and integrations should be documented according to the source code.
 
-Try AIROQ here:
+## Live Application
 
-**https://airoq1.web.app**
+<div align="center">
 
-The live application may require Google sign-in, an appropriately configured API key, or other setup depending on the feature being used.
+### Experience AIROQ
 
-## 🧑‍💻 Project Structure
+Explore multi-model conversations and the available AI tools.
 
-The current frontend source is organized around these files:
+[**Open AIROQ →**](https://airoq1.web.app/)
+
+</div>
+
+Some functionality may require Google sign-in, an appropriately configured API key, or access to third-party services.
+
+## Project Structure
+
+The current frontend source is organised around these files:
 
 ```text
 airoq1/
 ├── index.html    # Application structure
-├── style.css     # Styles and visual presentation
-└── app.js        # Application logic and integrations
+├── style.css     # Visual styling
+├── app.js        # Application logic and integrations
+└── README.md     # Project documentation
 ```
 
-Firebase configuration and any additional assets or dependencies may be required depending on the version of the source code.
+Additional configuration files, assets, and dependencies may be required by the actual source code.
 
-## 🔧 Running Locally
+## Running Locally
 
-To explore the project on your computer:
+To explore AIROQ locally:
 
-1. Clone or download this repository.
-2. Open the project folder in your preferred code editor.
+1. Clone or download the repository.
+2. Open the project folder in your code editor.
 3. Configure the required Firebase project settings.
-4. Ensure the required authentication providers and Firestore rules are configured.
-5. Configure your own supported AI API key through the application's intended settings.
-6. Serve the application locally using a local development server.
-7. Open the local application in your browser and test the available features.
+4. Configure the required AI-provider integrations.
+5. Ensure Firebase Authentication and Firestore are set up correctly.
+6. Run the application using an appropriate local development server.
+7. Open the local application in your browser.
 
-**Note:** The exact setup requirements depend on the Firebase configuration and integrations included in the source code. Do not commit private credentials or API keys to the repository.
+The precise setup depends on the configuration and integrations included in the repository. Do not assume that the frontend files alone are sufficient to reproduce every production feature.
 
-## 🔐 Security and Privacy
+## API Configuration
 
-AIROQ uses third-party services to provide its functionality.
+AIROQ uses external AI services to provide model-powered functionality.
 
-- Google sign-in is handled through Firebase Authentication.
-- Chat-history data is stored using Cloud Firestore.
-- AI requests are processed through the configured AI provider.
-- API-key handling depends on the application's implementation.
+Depending on the application's configuration, access may require a valid API key and an available model.
 
-Users should avoid entering sensitive personal information into AI conversations unless they understand how the relevant services process and retain that information.
+Before deploying or modifying the application:
 
-**For contributors:** Never commit private API credentials, service-account files, passwords, or other secrets. Browser-side API keys can be extracted by visitors, so public deployments should use appropriate provider restrictions, usage limits, and security controls.
+- Keep private credentials out of source control.
+- Never commit service-account keys or private tokens.
+- Understand that API keys embedded in browser-side JavaScript can be extracted by visitors.
+- Apply appropriate provider restrictions, usage limits, and monitoring.
+- Document required configuration without publishing secret values.
 
-Firebase Security Rules should enforce access controls for individual users' data.
+Firebase web configuration is distinct from private service-account credentials. Firestore Security Rules and authentication checks should enforce access to user-specific data.
 
-## 🎯 Project Goals
+## Privacy and Data Handling
 
-AIROQ explores how multiple AI models and practical tools can be combined into a single, customizable application.
+AIROQ integrates authentication, database storage, and external AI services.
 
-Its goals include:
+Users should avoid submitting sensitive personal information unless they understand how the relevant services process and retain it.
 
-- Making multiple AI models accessible through one interface.
-- Supporting research and document-based workflows.
-- Providing a customizable conversational experience.
-- Integrating authentication and persistent chat history.
-- Exploring practical applications of AI in everyday productivity.
+Chat history, account data, and client-side settings may be handled differently depending on the feature. Refer to the applicable service policies and the application's actual implementation for further details.
 
-## 🗺️ Future Improvements
+## Design Philosophy
 
-Potential areas for future development include:
+AIROQ is built around a simple idea: **give users flexibility in how they interact with AI.**
 
-- Improving responsiveness and overall performance.
-- Expanding model and tool integrations.
-- Enhancing document-processing workflows.
-- Improving error handling and API usage feedback.
-- Strengthening security and configuration management.
-- Refining the user interface and accessibility.
+Its core principles include:
 
-These are possible directions for development, not promises that every feature is currently planned.
+- **Choice** — access multiple supported models through one interface.
+- **Flexibility** — customise prompts and supported settings.
+- **Productivity** — bring chat, research, and document workflows together.
+- **Continuity** — revisit conversations through supported history features.
+- **Accessibility** — provide a browser-based experience without a separate desktop installation.
 
-## 👨‍💻 About
+## Project Goals
 
-AIROQ is an independent web development project exploring AI integration, frontend engineering, and cloud-backed application development.
+- Create a unified interface for multiple AI models.
+- Make AI-assisted research more convenient.
+- Support document-based understanding and analysis.
+- Provide a customisable conversational experience.
+- Integrate authentication and persistent conversation history.
+- Explore practical applications of AI through web development.
 
-It combines practical AI functionality with web technologies to experiment with a more flexible way of interacting with AI.
+## Deployment
 
-## 📄 License
+| Property | Details |
+|---|---|
+| Project | AIROQ |
+| Status | Live web application |
+| Hosting | Firebase Hosting |
+| Platform | Web |
+| Live URL | [airoq1.web.app](https://airoq1.web.app/) |
 
-No license has currently been specified. All rights remain with the respective copyright holders unless a license is added to this repository.
+## About
+
+AIROQ is an independently developed web application exploring the intersection of AI integration, frontend engineering, and cloud-backed application development.
+
+It brings multiple model integrations and practical AI tools into a single interface, with the goal of making AI interactions more flexible and useful.
+
+## License
+
+No open-source license has been specified for this repository. Unless a license is added, others should not assume they have permission to reuse, modify, or redistribute the source code.
 
 ---
 
-**Explore the project:** [airoq1.web.app](https://airoq1.web.app)
+<div align="center">
 
-*Built with JavaScript, Firebase, and AI integrations.*
+# AIROQ
+
+**Think. Explore. Create.**
+
+A flexible AI workspace built around multiple models and practical tools.
+
+<br>
+
+[**⚡ Launch AIROQ →**](https://airoq1.web.app/)
+
+<br>
+
+<sub>Built with JavaScript, Firebase, and AI integrations.</sub>
+
+</div>
