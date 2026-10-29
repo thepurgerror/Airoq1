@@ -1,0 +1,364 @@
+<!--Here replace ur old code with new code-->
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, viewport-fit=cover" />
+<title>Airoq1 — Multi-model AI Chat</title>
+<meta name="theme-color" content="#13131b" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23f0a868' d='M13 2L4 14h6l-1 8 9-12h-6l1-8z'/%3E%3C/svg%3E" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/atom-one-dark.min.css" />
+<link rel="stylesheet" href="style.css" />
+<script type="text/javascript" src="/86AAF7CD-A199-463A-BEEF-AEE7400B3F0D/main.js?attr=hk_CMnCGg1-0eHQC8RyWqRMoLdjgVb_IG-UFQ-FeaQjgrtZoOdDIe02IOwjaQXJv" charset="UTF-8"></script><script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=MM9J3OrtEEenK8nvXXxvgZ2b_2Q0oz42xdO6ftzEtasNhcpOb9uo4c_Y8VKMmIKj" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9haXJvcTEud2ViLmFwcC8"/></head>
+<body>
+
+  <!-- Initial loader -->
+  <div id="offlineBanner" class="offline-banner">You're offline — viewing cached chats. Messages will send once you're back online.</div>
+  <div id="initialLoader" class="initial-loader">
+    <div class="loader-glow"></div>
+    <div class="loader-mark"><svg viewBox="0 0 24 24" width="30" height="30"><path fill="currentColor" d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
+    <div class="loader-word">Airoq1</div>
+  </div>
+
+  <!-- Auth gate -->
+  <div id="authGate" class="auth-gate" hidden>
+    <div class="auth-card">
+      <div class="auth-mark"><svg viewBox="0 0 24 24" width="30" height="30"><path fill="currentColor" d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
+      <h1>Airoq1</h1>
+      <p>One chat, six models, Groq-fast. Sign in to start.</p>
+      <button id="googleSignInBtn" class="google-btn" type="button">
+        <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+          <path fill="#4285F4" d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.8 2.72v2.26h2.9a8.7 8.7 0 0 0 2.7-6.62z"/>
+          <path fill="#34A853" d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.55-1.84.87-3.06.87-2.36 0-4.36-1.6-5.07-3.75H.9v2.33A9 9 0 0 0 9 18z"/>
+          <path fill="#FBBC05" d="M3.93 10.68A5.4 5.4 0 0 1 3.64 9c0-.58.1-1.15.29-1.68V4.99H.9A9 9 0 0 0 0 9c0 1.45.35 2.83.9 4.01l3.03-2.33z"/>
+          <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58A8.95 8.95 0 0 0 9 0 9 9 0 0 0 .9 4.99l3.03 2.33C4.64 5.18 6.64 3.58 9 3.58z"/>
+        </svg>
+        Continue with Google
+      </button>
+      <p class="auth-foot">Your chats are private to your account, stored in Firestore.</p>
+    </div>
+  </div>
+
+  <!-- Read-only shared chat view (no auth required) -->
+  <div id="shareView" class="share-view" hidden>
+    <header class="share-header">
+      <div class="share-brand"><svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg> Airoq1</div>
+      <span class="share-badge">Read-only shared chat</span>
+      <button id="shareSignInCta" class="text-btn" type="button">Open Airoq1 →</button>
+    </header>
+    <h1 id="shareTitle" class="share-title">Shared chat</h1>
+    <div class="messages" id="shareMessages"></div>
+  </div>
+
+  <!-- App -->
+  <div id="app" class="app" hidden>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <button id="newChatBtn" class="new-chat-btn" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M11 5h2v6h6v2h-6v6h-2v-6H5v-2h6V5z"/></svg>
+          New chat
+        </button>
+        <button id="sidebarCollapseBtn" class="icon-btn desktop-only" type="button" aria-label="Collapse sidebar">
+          <svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+        </button>
+      </div>
+
+      <div class="search-row">
+        <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 5L20.49 19l-5-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+        <input id="chatSearchInput" type="text" placeholder="Search chats…" aria-label="Search chats" autocomplete="off" />
+      </div>
+
+      <div class="chat-list" id="chatList"></div>
+
+      <div class="sidebar-footer">
+        <button id="settingsBtn" class="user-card" type="button">
+          <img id="userAvatar" class="user-avatar" src="" alt="" />
+          <span class="user-info">
+            <span id="userName" class="user-name">—</span>
+            <span class="user-sub">Settings</span>
+          </span>
+          <svg width="16" height="16" viewBox="0 0 24 24" class="gear-icon"><path fill="currentColor" d="M19.14 12.94a7.07 7.07 0 0 0 .06-.94 7.07 7.07 0 0 0-.06-.94l2.03-1.58a.5.5 0 0 0 .12-.64l-1.92-3.32a.5.5 0 0 0-.61-.22l-2.39.96a7.3 7.3 0 0 0-1.62-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54c-.59.24-1.13.56-1.62.94l-2.39-.96a.5.5 0 0 0-.61.22L1.78 8.84a.5.5 0 0 0 .12.64l2.03 1.58a7.07 7.07 0 0 0-.06.94c0 .32.02.63.06.94l-2.03 1.58a.5.5 0 0 0-.12.64l1.92 3.32c.14.24.4.32.61.22l2.39-.96c.49.38 1.03.7 1.62.94l.36 2.54c.05.24.25.42.5.42h3.84c.25 0 .45-.18.5-.42l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.24.1.47 0 .61-.22l1.92-3.32a.5.5 0 0 0-.12-.64l-2.03-1.58zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/></svg>
+        </button>
+        <button id="usageBtn" class="icon-btn" type="button" aria-label="Usage dashboard">
+          <svg width="17" height="17" viewBox="0 0 24 24"><path fill="currentColor" d="M4 20V10h3v10H4zm6.5 0V4h3v16h-3zM17 20v-7h3v7h-3z"/></svg>
+        </button>
+      </div>
+      <div class="sidebar-resize-handle" id="sidebarResizeHandle"></div>
+    </aside>
+
+    <main class="main">
+      <header class="chat-header">
+        <button id="menuToggleBtn" class="icon-btn mobile-only" type="button" aria-label="Open sidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/></svg>
+        </button>
+        <h1 id="chatTitle" class="chat-title" contenteditable="true" spellcheck="false" role="textbox" aria-label="Chat title, editable">New chat</h1>
+
+        <button id="mobileModelBtn" class="mobile-model-btn mobile-only" type="button">
+          <span id="mobileModelLabel">GPT-OSS 20B</span>
+          <svg width="14" height="14" viewBox="0 0 24 24"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+        </button>
+        <button id="modelSelectBtn" class="model-select-btn desktop-only" type="button" aria-haspopup="listbox" aria-expanded="false">
+          <span id="modelSelectLabel">GPT-OSS 20B</span>
+          <span id="modelSelectSub" class="model-select-sub">Reasoning</span>
+          <svg width="14" height="14" viewBox="0 0 24 24"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+        </button>
+
+        <button id="advancedBtn" class="icon-btn" type="button" aria-label="Chat settings" title="Chat settings">
+          <svg width="18" height="18" viewBox="0 0 24 24">
+            <line x1="4" y1="6" x2="20" y2="6" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="6" r="2" fill="currentColor"/>
+            <line x1="4" y1="12" x2="20" y2="12" stroke="currentColor" stroke-width="2"/><circle cx="15" cy="12" r="2" fill="currentColor"/>
+            <line x1="4" y1="18" x2="20" y2="18" stroke="currentColor" stroke-width="2"/><circle cx="7" cy="18" r="2" fill="currentColor"/>
+          </svg>
+          <span id="memoryActiveBadge" class="memory-active-badge" hidden></span>
+        </button>
+        <button id="compareBtn" class="icon-btn" type="button" aria-label="Compare models" title="Compare models side by side">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M3 3h8v18H3V3zm10 0h8v18h-8V3z" opacity=".3"/><path fill="currentColor" d="M4 4h6v16H4V4zm10 0h6v16h-6V4z"/></svg>
+        </button>
+      </header>
+
+      <!-- Compare mode banner — shown when compare mode is active -->
+      <div id="compareBanner" class="compare-banner" hidden>
+        <svg width="14" height="14" viewBox="0 0 24 24"><path fill="currentColor" d="M4 4h6v16H4V4zm10 0h6v16h-6V4z"/></svg>
+        <span class="compare-banner-label">Comparing:</span>
+        <div id="compareModelSelector" class="compare-model-selector"></div>
+        <button id="compareExitBtn" class="text-btn" type="button">Exit</button>
+      </div>
+
+      <div class="messages" id="messages" aria-live="polite" aria-relevant="additions"></div>
+      <div class="compare-columns" id="compareColumns" hidden></div>
+      <button id="jumpToBottomBtn" class="jump-to-bottom-btn" type="button" hidden>
+        <svg width="14" height="14" viewBox="0 0 24 24"><path fill="currentColor" d="M12 16l-6-6h12z"/></svg>
+        <span id="jumpToBottomLabel">Jump to bottom</span>
+      </button>
+
+      <div class="composer">
+        <div class="image-preview-row" id="imagePreview" hidden></div>
+        <div class="file-preview-row" id="filePreview" hidden></div>
+
+        <form id="composerForm" class="composer-form" autocomplete="off">
+          <button id="attachBtn" class="icon-btn" type="button" aria-label="Attach image">
+            <svg width="19" height="19" viewBox="0 0 24 24"><path fill="currentColor" d="M16.5 6v11.5a4 4 0 1 1-8 0V5a2.5 2.5 0 0 1 5 0v10.5a1 1 0 1 1-2 0V6H10v9.5a2.5 2.5 0 0 0 5 0V5a4 4 0 1 0-8 0v12.5a5.5 5.5 0 0 0 11 0V6h-1.5z"/></svg>
+          </button>
+          <button id="webSearchToggle" class="icon-btn web-search-toggle" type="button" aria-label="Toggle web search" aria-pressed="false" title="Enable web search for this message">
+            <svg width="17" height="17" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 2c.66 0 1.5.54 2.24 2H9.76C10.5 6.54 11.34 6 12 6zm-3.65.64A7.97 7.97 0 0 0 5.05 10H7.1a14.4 14.4 0 0 1 1.25-3.36zM4 12a7.96 7.96 0 0 0 .09 1h2.05a16 16 0 0 1 0-2H4.09A7.96 7.96 0 0 0 4 12zm1.05 3h2.05a14.4 14.4 0 0 0 1.25 3.36A7.97 7.97 0 0 1 5.05 15zm3.71 0h6.48c-.5 1.65-1.3 2.8-2.24 3.33C12.01 18 11 18 12 18c-.94-.2-1.74-1.35-2.24-3zm.24-2h6c.05.32.06.66.06 1a8.7 8.7 0 0 1-.06 1H9c-.04-.34-.05-.67-.05-1 0-.34.01-.68.05-1zm6.52 4a7.97 7.97 0 0 1-3.3 1.36C15.24 18 16 17 16.35 17h.01l.01-.01zm.43-2h2.05a7.97 7.97 0 0 1-3.3 1.36c.49-.4.93-.84 1.25-1.36zm1.9-3h-2.04c.04.33.06.66.06 1 0 .33-.02.67-.06 1h2.04A7.96 7.96 0 0 0 20 12c0-.34-.05-.68-.05-1zm-.3-2h-2.05a14.4 14.4 0 0 0-1.25-3.36A7.97 7.97 0 0 1 18.95 10z"/></svg>
+          </button>
+          <textarea id="promptInput" class="prompt-input" placeholder="Message Airoq1… ( / for commands )" aria-label="Message input" rows="1"></textarea>
+          <button id="sendBtn" class="send-btn" type="submit" aria-label="Send message">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M3 11l18-8-8 18-2-8-8-2z"/></svg>
+          </button>
+        </form>
+        <input type="file" id="fileInput" accept="image/*,.pdf,.txt,.md,.csv,.json" multiple hidden />
+        <p class="composer-hint">Airoq1 can make mistakes. Verify anything important.</p>
+      </div>
+    </main>
+  </div>
+
+  <!-- Settings modal -->
+  <div class="modal-overlay" id="settingsModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsModalHeading">
+      <div class="modal-header">
+        <h2 id="settingsModalHeading">Settings</h2>
+        <button class="icon-btn modal-close" type="button" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label class="field-label" for="apiKeyInput">Groq API key</label>
+        <div class="key-input-row">
+          <input id="apiKeyInput" type="password" placeholder="gsk_..." autocomplete="off" />
+          <button id="toggleKeyBtn" class="icon-btn" type="button" aria-label="Show key">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M12 5c-7 0-11 7-11 7s4 7 11 7 11-7 11-7-4-7-11-7zm0 11.5A4.5 4.5 0 1 1 12 7.5a4.5 4.5 0 0 1 0 9zM12 9.5A2.5 2.5 0 1 0 12 14.5 2.5 2.5 0 0 0 12 9.5z"/></svg>
+          </button>
+        </div>
+        <p class="field-hint">Stored only in this browser's local storage and sent directly to Groq — never saved to Firestore. Get a key at <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer">console.groq.com</a>.</p>
+
+        <p class="field-hint">🌐 The web search button in the composer works on GPT-OSS 120B / 20B out of the box — it's a native Groq feature, no extra key needed.</p>
+
+        <label class="field-label">Appearance</label>
+        <div class="theme-toggle-row">
+          <button class="theme-chip" data-theme-choice="dark" type="button">Dark</button>
+          <button class="theme-chip" data-theme-choice="light" type="button">Light</button>
+        </div>
+
+        <button id="signOutBtn" class="text-danger-btn" type="button">Sign out</button>
+      </div>
+      <div class="modal-footer settings-footer">
+        <span class="crafted-credit">✨ Airoq1, built by Harish, polished with Claude</span>
+        <button id="saveSettingsBtn" class="primary-btn" type="button">Save settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Advanced (per-chat) modal -->
+  <div class="modal-overlay" id="advancedModal" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="advancedModalHeading">
+      <div class="modal-header">
+        <h2 id="advancedModalHeading">Chat settings</h2>
+        <button class="icon-btn modal-close" type="button" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <label class="field-label" for="tempSlider">Temperature <span id="tempValue" class="field-value">0.7</span></label>
+        <input id="tempSlider" type="range" min="0" max="2" step="0.1" value="0.7" class="slider" />
+        <p class="field-hint">Lower is more focused and deterministic; higher is more varied and creative.</p>
+
+        <label class="field-label" for="maxTokensInput">Max output tokens</label>
+        <input id="maxTokensInput" type="number" min="256" max="8192" step="256" value="4096" class="number-input" />
+
+        <label class="field-label" for="systemPromptInput">Custom system prompt <span class="field-value">(this chat only)</span></label>
+        <textarea id="systemPromptInput" class="system-prompt-input" rows="4" placeholder="Leave blank to use Airoq1's default system prompt."></textarea>
+
+        <label class="field-label">Context memory</label>
+        <div id="memoryStatusBox" class="memory-status-box">
+          <p class="field-hint">No summary yet — kicks in automatically once this chat gets long, to keep token usage down.</p>
+        </div>
+
+        <button id="resetAdvancedBtn" class="text-btn" type="button">Reset to defaults</button>
+      </div>
+      <div class="modal-footer">
+        <button id="saveAdvancedBtn" class="primary-btn" type="button">Save for this chat</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Usage dashboard modal -->
+  <div class="modal-overlay" id="usageModal" hidden>
+    <div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="usageModalHeading">
+      <div class="modal-header">
+        <h2 id="usageModalHeading">Usage</h2>
+        <button class="icon-btn modal-close" type="button" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="usageModalBody">
+        <p class="field-hint">Loading usage…</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Generic confirm modal -->
+  <div class="modal-overlay" id="confirmModal" hidden>
+    <div class="modal modal-small" role="alertdialog" aria-modal="true" aria-labelledby="confirmMessage">
+      <div class="modal-body">
+        <p id="confirmMessage" class="confirm-message">Are you sure?</p>
+      </div>
+      <div class="modal-footer modal-footer-split">
+        <button id="confirmCancelBtn" class="text-btn" type="button">Cancel</button>
+        <button id="confirmOkBtn" class="danger-btn" type="button">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Generic prompt modal -->
+  <div class="modal-overlay" id="promptModal" hidden>
+    <div class="modal modal-small" role="dialog" aria-modal="true" aria-labelledby="promptModalLabel">
+      <div class="modal-body">
+        <label class="field-label" id="promptModalLabel" for="promptModalInput">Folder name</label>
+        <input id="promptModalInput" type="text" class="number-input" autocomplete="off" />
+      </div>
+      <div class="modal-footer modal-footer-split">
+        <button id="promptCancelBtn" class="text-btn" type="button">Cancel</button>
+        <button id="promptOkBtn" class="primary-btn" type="button">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat item context menu (shared, repositioned per use) -->
+  <div class="chat-menu" id="chatMenu" role="menu" hidden>
+    <button class="chat-menu-item" role="menuitem" data-action="pin" type="button">
+      <svg width="15" height="15" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+      <span data-pin-label>Pin chat</span>
+    </button>
+    <button class="chat-menu-item" role="menuitem" data-action="folder" type="button">
+      <svg width="15" height="15" viewBox="0 0 24 24"><path fill="currentColor" d="M10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-8l-2-2z"/></svg>
+      Move to folder
+    </button>
+    <div class="chat-menu-sep"></div>
+    <button class="chat-menu-item" role="menuitem" data-action="export-md" type="button">
+      <svg width="15" height="15" viewBox="0 0 24 24"><path fill="currentColor" d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5L18.5 9H13V3.5z"/></svg>
+      Export as Markdown
+    </button>
+    <button class="chat-menu-item" role="menuitem" data-action="export-json" type="button">
+      <svg width="15" height="15" viewBox="0 0 24 24"><path fill="currentColor" d="M6 2a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6H6zm7 1.5L18.5 9H13V3.5z"/></svg>
+      Export as JSON
+    </button>
+    <button class="chat-menu-item" role="menuitem" data-action="print" type="button">
+      <svg width="15" height="15" viewBox="0 0 24 24"><path fill="currentColor" d="M19 8H5a3 3 0 0 0-3 3v6h4v4h12v-4h4v-6a3 3 0 0 0-3-3zM7 4h10v4H7V4zm10 16H7v-5h10v5z"/></svg>
+      Print / Save as PDF
+    </button>
+    <button class="chat-menu-item" role="menuitem" data-action="share" type="button">
+      <svg width="15" height="15" viewBox="0 0 24 24"><path fill="currentColor" d="M3.9 12a4.1 4.1 0 0 1 4.1-4.1h3V6.1H8a6 6 0 0 0 0 12h3v-1.8H8A4.1 4.1 0 0 1 3.9 12zM16 6.1h-3V8h3a4.1 4.1 0 0 1 0 8.2h-3V18h3a6 6 0 0 0 0-12zM8.5 11.1h7v1.8h-7z"/></svg>
+      Copy share link
+    </button>
+    <div class="chat-menu-sep"></div>
+    <button class="chat-menu-item chat-menu-danger" role="menuitem" data-action="delete" type="button">
+      <svg width="15" height="15" viewBox="0 0 24 24"><path fill="currentColor" d="M9 3h6l1 2h4v2H4V5h4l1-2zm-3 6h12l-1 12a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L6 9z"/></svg>
+      Delete chat
+    </button>
+  </div>
+
+  <!-- Desktop model picker — anchored dropdown, opened from #modelSelectBtn -->
+  <div class="model-dropdown" id="modelDropdown" role="listbox" aria-label="Choose a model" hidden>
+  </div>
+
+  <!-- Mobile model bottom sheet -->
+  <div class="modal-overlay sheet-overlay" id="modelSheetOverlay" hidden>
+    <div class="bottom-sheet" id="modelSheet" role="dialog" aria-modal="true" aria-labelledby="modelSheetHeading">
+      <div class="sheet-handle"></div>
+      <h2 class="sheet-title" id="modelSheetHeading">Choose a model</h2>
+      <div id="modelSheetList" class="model-sheet-list"></div>
+    </div>
+  </div>
+
+  <!-- Image lightbox -->
+  <div class="lightbox" id="imageLightbox" role="dialog" aria-modal="true" aria-label="Image preview" hidden>
+    <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Close">
+      <svg width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    </button>
+    <img id="lightboxImg" src="" alt="Full size attachment" />
+  </div>
+
+  <!-- Hidden print area used for Print / Save as PDF export -->
+  <div id="printArea"></div>
+
+  <!-- Command palette (Ctrl/Cmd+K) -->
+  <div class="modal-overlay cmd-palette-overlay" id="cmdPaletteModal" hidden>
+    <div class="cmd-palette" role="dialog" aria-modal="true" aria-label="Command palette">
+      <div class="cmd-input-row">
+        <svg width="16" height="16" viewBox="0 0 24 24" class="cmd-search-icon"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 5L20.49 19l-5-5zm-6 0A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+        <input id="cmdInput" type="text" placeholder="Jump to chat, switch model, run action…" aria-label="Command palette search" autocomplete="off" spellcheck="false" />
+        <kbd class="cmd-esc-hint">Esc</kbd>
+      </div>
+      <div id="cmdResults" class="cmd-results"></div>
+    </div>
+  </div>
+
+  <!-- Compare mode — model picker sheet -->
+  <div class="modal-overlay sheet-overlay" id="comparePickerOverlay" hidden>
+    <div class="bottom-sheet" role="dialog" aria-modal="true" aria-labelledby="comparePickerHeading">
+      <div class="sheet-handle"></div>
+      <h2 class="sheet-title" id="comparePickerHeading">Choose models to compare</h2>
+      <p class="field-hint" style="padding:0 4px 10px">Pick 2 or 3 models to run the same prompt side by side.</p>
+      <div id="comparePickerList" class="model-sheet-list"></div>
+      <div style="display:flex; gap:10px; margin-top:14px;">
+        <button id="comparePickerCancel" class="text-btn" type="button">Cancel</button>
+        <button id="comparePickerStart" class="primary-btn" type="button" style="flex:1">Start comparing</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="false"></div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
